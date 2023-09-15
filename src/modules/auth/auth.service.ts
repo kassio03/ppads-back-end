@@ -1,25 +1,27 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../user/users.service';
+import { compare } from 'bcrypt';
+import { UserService } from '../user/user.service';
 import { LoginRequestDto } from './dtos';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
+    private userService: UserService,
     private jwtService: JwtService,
   ) {}
 
   async login(data: LoginRequestDto) {
-    const user = await this.usersService.findOne({
+    const user = await this.userService.findOne({
       email: data.email,
-      password: data.password,
     });
-    if (!user) throw new UnauthorizedException('Email e/ou senha inválidos(s)');
+    const isPasswordValid = compare(data.password, user.password);
+    if (!isPasswordValid)
+      throw new UnauthorizedException('Email e/ou senha inválidos(s)');
     return {
       token: this.jwtService.sign(
         {
-          email: data.email,
+          email: user.email,
           id: user.id,
         },
         {

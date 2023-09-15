@@ -11,5 +11,5 @@ export const databaseConfig: DataSourceOptions = {
   port: Number(process.env.DATABASE_PORT),
   database: process.env.DATABASE_NAME,
   entities: ['dist/modules/**/**/*.entity.{ts,js}'],
-  migrations: ['dist/common/database/migrations/*.{ts,js}'],
+  migrations: ['dist/config/database/migrations/*.{ts,js}'],
 };

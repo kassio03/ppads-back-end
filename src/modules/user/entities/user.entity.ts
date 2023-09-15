@@ -9,7 +9,8 @@ import {
 
 @Entity('user')
 export class UserEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
@@ -21,6 +22,7 @@ export class UserEntity {
   @Column({
     type: 'varchar',
     name: 'email',
+    unique: true,
   })
   email: string;
 
