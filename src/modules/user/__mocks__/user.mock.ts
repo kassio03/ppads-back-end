@@ -8,4 +8,5 @@ export const userEntityMock: UserEntity = {
   updatedAt: new Date(),
   createdAt: new Date(),
   deletedAt: new Date(),
+  events: [],
 };

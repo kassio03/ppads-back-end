@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CityService } from '../city/city.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { AddressEntity } from './entities/address.entity';
@@ -9,9 +10,13 @@ import { AddressEntity } from './entities/address.entity';
 export class AddressService {
   constructor(
     @InjectRepository(AddressEntity)
-    private repository: Repository<AddressEntity>,
+    private readonly repository: Repository<AddressEntity>,
+    private readonly cityService: CityService,
   ) {}
   async create(body: CreateAddressDto) {
+    // todo: findOneCity pra ver se existe
+    await this.cityService.findOne(body.cityId);
+
     const entityToInsert = this.repository.create();
     entityToInsert.cep = body.cep;
     entityToInsert.complement = body.complement;

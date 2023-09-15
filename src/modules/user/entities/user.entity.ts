@@ -1,15 +1,16 @@
+import { EventEntity } from 'src/modules/event/entities/event.entity';
 import {
   Column,
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
-  @PrimaryGeneratedColumn('uuid')
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -31,6 +32,9 @@ export class UserEntity {
     name: 'password',
   })
   password: string;
+
+  @OneToMany(() => EventEntity, (event) => event)
+  events: EventEntity[];
 
   @CreateDateColumn({
     type: 'timestamp',

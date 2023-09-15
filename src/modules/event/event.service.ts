@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../user/entities/user.entity';
@@ -15,8 +15,7 @@ export class EventService {
   ) {}
   async create(body: CreateEventDto, user: UserEntity): Promise<EventEntity> {
     const entityToInsert = this.repository.create();
-    // todo: inserir campo de author e passar o userId pq n tem registro no evento de quem criou ele
-    user;
+
     entityToInsert.title = body.title;
     entityToInsert.description = body.description;
     entityToInsert.remainingTickets = body.remainingTickets;
@@ -25,6 +24,7 @@ export class EventService {
     entityToInsert.price = body.price;
     entityToInsert.poster = body.poster;
     entityToInsert.addressId = body.addressId;
+    entityToInsert.authorId = user.id;
 
     const entityInserted = await this.repository.save(entityToInsert);
 
@@ -59,14 +59,26 @@ export class EventService {
       select: utilFields,
     });
 
+    if (!specificEntity)
+      throw new NotFoundException('Evento não foi encontrado');
+
     return specificEntity;
   }
 
-  async update(id: number, updateEventDto: UpdateEventDto) {
-    return updateEventDto;
+  async update(id: string, body: UpdateEventDto) {
+    const entityToUpdate = await this.repository.findOne({
+      where: { id },
+    });
+    entityToUpdate.description = body.description;
+    entityToUpdate.title = body.title;
+
+    if (!entityToUpdate)
+      throw new NotFoundException('Evento não foi encontrado');
+
+    await this.repository.save(entityToUpdate);
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return `This action removes a #${id} event`;
   }
 }

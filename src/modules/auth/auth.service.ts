@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { compare } from 'bcrypt';
 import { UserService } from '../user/user.service';
@@ -15,6 +19,7 @@ export class AuthService {
     const user = await this.userService.findOne({
       email: data.email,
     });
+    if (!user) throw new NotFoundException('Usuario não encontrado.');
     const isPasswordValid = compare(data.password, user.password);
     if (!isPasswordValid)
       throw new UnauthorizedException('Email e/ou senha inválidos(s)');

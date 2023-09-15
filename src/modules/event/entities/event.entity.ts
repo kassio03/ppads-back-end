@@ -1,4 +1,5 @@
 import { AddressEntity } from 'src/modules/address/entities/address.entity';
+import { UserEntity } from 'src/modules/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+
 @Entity('event')
 export class EventEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -67,6 +69,16 @@ export class EventEntity {
   @ManyToOne(() => AddressEntity, (address) => address)
   @JoinColumn({ name: 'addressId', referencedColumnName: 'id' })
   address: AddressEntity;
+
+  @Column({
+    type: 'varchar',
+    name: 'authorId',
+  })
+  authorId: string;
+
+  @ManyToOne(() => UserEntity, (user) => user)
+  @JoinColumn({ name: 'authorId', referencedColumnName: 'id' })
+  author: UserEntity;
 
   @CreateDateColumn({
     type: 'timestamp',

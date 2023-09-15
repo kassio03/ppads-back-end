@@ -4,8 +4,8 @@ import {
   Delete,
   Get,
   Param,
-  Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
@@ -37,18 +37,18 @@ export class EventController {
     return this.eventService.findOne(id);
   }
 
-  @Patch(':id')
+  @Put(':id')
   @UseGuards(JwtGuard)
   async update(
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
   ) {
-    return this.eventService.update(+id, updateEventDto);
+    return this.eventService.update(id, updateEventDto);
   }
 
   @Delete(':id')
   @UseGuards(JwtGuard)
   async remove(@Param('id') id: string) {
-    return this.eventService.remove(+id);
+    return this.eventService.remove(id);
   }
 }
