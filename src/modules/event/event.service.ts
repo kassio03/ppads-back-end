@@ -61,7 +61,6 @@ export class EventService {
             state: true,
           },
         },
-        tickets: true,
       },
       select: eventUtilFields,
     });
