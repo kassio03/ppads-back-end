@@ -45,7 +45,6 @@ export class EventEntity {
   @CreateDateColumn({
     type: 'timestamp',
     name: 'startsAt',
-    unique: true,
   })
   eventStartsAt: Date;
 
@@ -53,7 +52,6 @@ export class EventEntity {
   @CreateDateColumn({
     type: 'timestamp',
     name: 'finishAt',
-    unique: true,
   })
   eventFinishAt: Date;
 
