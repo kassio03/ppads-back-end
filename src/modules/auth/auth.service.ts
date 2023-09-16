@@ -20,7 +20,8 @@ export class AuthService {
       email: data.email,
     });
     if (!user) throw new NotFoundException('Usuario não encontrado.');
-    const isPasswordValid = compare(data.password, user.password);
+    console.log(data.password, user.password);
+    const isPasswordValid = await compare(data.password, user.password);
     if (!isPasswordValid)
       throw new UnauthorizedException('Email e/ou senha inválidos(s)');
     return {

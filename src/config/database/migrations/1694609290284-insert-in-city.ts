@@ -5601,6 +5601,9 @@ export class insertInCity1694609290284 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.query(`DELETE FROM "ticket"`);
+    await queryRunner.query(`DELETE FROM "event"`);
+    await queryRunner.query(`DELETE FROM "address"`);
     await queryRunner.query(`DELETE FROM "city"`);
   }
 }

@@ -7,7 +7,7 @@ import { CityEntity } from './entities/city.entity';
 export class CityService {
   constructor(
     @InjectRepository(CityEntity)
-    private repository: Repository<CityEntity>,
+    private readonly repository: Repository<CityEntity>,
   ) {}
 
   // todo: desfazer pq ficou redundante

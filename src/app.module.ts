@@ -6,6 +6,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { CityModule } from './modules/city/city.module';
 import { EventModule } from './modules/event/event.module';
 import { StateModule } from './modules/state/state.module';
+import { TicketModule } from './modules/ticket/ticket.module';
 import { UserModule } from './modules/user/user.module';
 
 @Module({
@@ -17,6 +18,7 @@ import { UserModule } from './modules/user/user.module';
     CityModule,
     StateModule,
     AddressModule,
+    TicketModule,
   ],
 })
 export class AppModule {}

@@ -1,24 +1,30 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UserEntity } from '../user/entities/user.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { EventEntity } from './entities/event.entity';
-import { utilFields } from './utils/util-fields';
+import { eventUtilFields } from './utils/event-util-fields';
 
 @Injectable()
 export class EventService {
   constructor(
     @InjectRepository(EventEntity)
-    private repository: Repository<EventEntity>,
+    private readonly repository: Repository<EventEntity>,
   ) {}
   async create(body: CreateEventDto, user: UserEntity): Promise<EventEntity> {
+    //todo: precisa ver se o addressId já existe
     const entityToInsert = this.repository.create();
 
     entityToInsert.title = body.title;
     entityToInsert.description = body.description;
     entityToInsert.remainingTickets = body.remainingTickets;
+    entityToInsert.totalTickets = body.remainingTickets;
     entityToInsert.eventStartsAt = new Date(body.eventStartsAt);
     entityToInsert.eventFinishAt = new Date(body.eventFinishAt);
     entityToInsert.price = body.price;
@@ -40,7 +46,7 @@ export class EventService {
           },
         },
       },
-      select: utilFields,
+      select: eventUtilFields,
     });
 
     return allEntities;
@@ -55,8 +61,9 @@ export class EventService {
             state: true,
           },
         },
+        tickets: true,
       },
-      select: utilFields,
+      select: eventUtilFields,
     });
 
     if (!specificEntity)
@@ -64,17 +71,30 @@ export class EventService {
 
     return specificEntity;
   }
+  async update(eventId: string, body: UpdateEventDto, userId: string) {
+    const entityToUpdate = await this.repository.findOne({
+      where: { id: eventId },
+    });
+    if (!entityToUpdate)
+      throw new NotFoundException('Evento não foi encontrado');
+    if (!(entityToUpdate.authorId === userId)) {
+      throw new UnauthorizedException(
+        'Este evento não pertence ao usuário atualmente logado.',
+      );
+    }
+    entityToUpdate.description = body.description;
+    entityToUpdate.title = body.title;
+    // todo: preciso chamar na geração do ticket?
 
-  async update(id: string, body: UpdateEventDto) {
+    const updatedEntity = await this.repository.save(entityToUpdate);
+    return updatedEntity;
+  }
+
+  async updateRemainingTickets(id: string) {
     const entityToUpdate = await this.repository.findOne({
       where: { id },
     });
-    entityToUpdate.description = body.description;
-    entityToUpdate.title = body.title;
-
-    if (!entityToUpdate)
-      throw new NotFoundException('Evento não foi encontrado');
-
+    entityToUpdate.remainingTickets -= 1;
     await this.repository.save(entityToUpdate);
   }
 

@@ -1,4 +1,4 @@
-export const utilFields = {
+export const eventUtilFields = {
   id: true,
   title: true,
   description: true,
@@ -7,6 +7,8 @@ export const utilFields = {
   eventFinishAt: true,
   price: true,
   poster: true,
+  authorId: true,
+  totalTickets: true,
   address: {
     complement: true,
     houseNumber: true,

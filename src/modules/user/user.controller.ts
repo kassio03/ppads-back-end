@@ -42,6 +42,6 @@ export class UserController {
   @UseGuards(JwtGuard)
   async get(@CurrentUser() user: UserEntity) {
     const res = await this.userService.findOne({ id: user.id });
-    return successBody(res);
+    return successBody(new ReturnUserDto(res));
   }
 }

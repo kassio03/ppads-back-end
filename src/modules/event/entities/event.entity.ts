@@ -1,4 +1,5 @@
 import { AddressEntity } from 'src/modules/address/entities/address.entity';
+import { TicketEntity } from 'src/modules/ticket/entities/ticket.entity';
 import { UserEntity } from 'src/modules/user/entities/user.entity';
 import {
   Column,
@@ -7,6 +8,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -34,6 +36,12 @@ export class EventEntity {
   })
   remainingTickets: number;
 
+  @Column({
+    type: 'int',
+    name: 'totalTickets',
+  })
+  totalTickets: number;
+
   @CreateDateColumn({
     type: 'timestamp',
     name: 'startsAt',
@@ -41,6 +49,7 @@ export class EventEntity {
   })
   eventStartsAt: Date;
 
+  // todo: remover unique
   @CreateDateColumn({
     type: 'timestamp',
     name: 'finishAt',
@@ -79,6 +88,9 @@ export class EventEntity {
   @ManyToOne(() => UserEntity, (user) => user)
   @JoinColumn({ name: 'authorId', referencedColumnName: 'id' })
   author: UserEntity;
+
+  @OneToMany(() => TicketEntity, (tickets) => tickets.event)
+  tickets: TicketEntity[];
 
   @CreateDateColumn({
     type: 'timestamp',

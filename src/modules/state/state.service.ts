@@ -7,7 +7,7 @@ import { StateEntity } from './entities/state.entity';
 export class StateService {
   constructor(
     @InjectRepository(StateEntity)
-    private repository: Repository<StateEntity>,
+    private readonly repository: Repository<StateEntity>,
   ) {}
 
   async findAll(): Promise<StateEntity[]> {

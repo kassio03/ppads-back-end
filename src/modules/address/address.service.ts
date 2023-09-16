@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CityService } from '../city/city.service';
@@ -14,9 +14,9 @@ export class AddressService {
     private readonly cityService: CityService,
   ) {}
   async create(body: CreateAddressDto) {
-    // todo: findOneCity pra ver se existe
-    await this.cityService.findOne(body.cityId);
-
+    const specificCityEntity = await this.cityService.findOne(body.cityId);
+    if (!specificCityEntity)
+      throw new NotFoundException('Cidade não encontrada');
     const entityToInsert = this.repository.create();
     entityToInsert.cep = body.cep;
     entityToInsert.complement = body.complement;
@@ -30,6 +30,7 @@ export class AddressService {
     return `This action returns all address`;
   }
 
+  //todo: implementar esse metodo pra ver se o address existe antes de cadastrar o evento
   findOne(id: number) {
     return `This action returns a #${id} address`;
   }

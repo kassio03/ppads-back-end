@@ -8,6 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
+import { successBody } from 'src/common/utils';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtGuard } from '../auth/jwt.guard';
 import { UserEntity } from '../user/entities/user.entity';
@@ -24,17 +25,17 @@ export class EventController {
     @Body() createEventDto: CreateEventDto,
     @CurrentUser() user: UserEntity,
   ) {
-    return this.eventService.create(createEventDto, user);
+    return await this.eventService.create(createEventDto, user);
   }
 
   @Get()
   async findAll() {
-    return this.eventService.findAll();
+    return await this.eventService.findAll();
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.eventService.findOne(id);
+    return await this.eventService.findOne(id);
   }
 
   @Put(':id')
@@ -42,8 +43,10 @@ export class EventController {
   async update(
     @Param('id') id: string,
     @Body() updateEventDto: UpdateEventDto,
+    @CurrentUser() user: UserEntity,
   ) {
-    return this.eventService.update(id, updateEventDto);
+    const res = await this.eventService.update(id, updateEventDto, user.id);
+    return successBody(res);
   }
 
   @Delete(':id')

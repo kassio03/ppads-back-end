@@ -1,4 +1,5 @@
 import { EventEntity } from 'src/modules/event/entities/event.entity';
+import { TicketEntity } from 'src/modules/ticket/entities/ticket.entity';
 import {
   Column,
   CreateDateColumn,
@@ -33,8 +34,11 @@ export class UserEntity {
   })
   password: string;
 
-  @OneToMany(() => EventEntity, (event) => event)
+  @OneToMany(() => EventEntity, (event) => event.author)
   events: EventEntity[];
+
+  @OneToMany(() => TicketEntity, (ticket) => ticket.user)
+  tickets: TicketEntity[];
 
   @CreateDateColumn({
     type: 'timestamp',

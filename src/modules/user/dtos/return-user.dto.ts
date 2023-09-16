@@ -1,3 +1,5 @@
+import { EventEntity } from 'src/modules/event/entities/event.entity';
+import { TicketEntity } from 'src/modules/ticket/entities/ticket.entity';
 import { UserEntity } from '../entities/user.entity';
 
 export class ReturnUserDto {
@@ -5,8 +7,12 @@ export class ReturnUserDto {
     this.id = userEntity.id;
     this.name = userEntity.name;
     this.email = userEntity.email;
+    this.events = userEntity.events;
+    this.tickets = userEntity.tickets;
   }
   id: string;
   name: string;
   email: string;
+  events?: EventEntity[];
+  tickets?: TicketEntity[];
 }

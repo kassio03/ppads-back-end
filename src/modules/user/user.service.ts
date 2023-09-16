@@ -4,12 +4,13 @@ import { hash } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from './dtos';
 import { UserEntity } from './entities/user.entity';
+import { userUtilFields } from './utils/user-util-fields';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
-    private repository: Repository<UserEntity>,
+    private readonly repository: Repository<UserEntity>,
   ) {}
 
   async insert(body: CreateUserDto): Promise<UserEntity> {
@@ -17,7 +18,7 @@ export class UserService {
       where: { email: body.email },
     });
     if (userEmailAlreadyExists) {
-      throw new BadRequestException('email registered in system');
+      throw new BadRequestException('email já registrado');
     }
     const passwordHashed = await hash(body.password, 10);
     const entityToInsert = this.repository.create();
@@ -44,9 +45,11 @@ export class UserService {
   }
 
   async findOne(data: Partial<UserEntity>): Promise<UserEntity> {
-    const entityToReturn = await this.repository.findOne({ where: data });
+    const entityToReturn = await this.repository.findOne({
+      where: data,
+      relations: { events: true, tickets: true },
+      select: userUtilFields,
+    });
     return entityToReturn;
   }
-
-  //todo: preciso do findOneById pra achar o author do event
 }
