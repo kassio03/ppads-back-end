@@ -34,8 +34,10 @@ export class UserService {
 
   async update(id: string, body: UpdateUserDto): Promise<void> {
     const entityToUpdate = await this.repository.findOne({ where: { id } });
-    entityToUpdate.name = body.name;
-    entityToUpdate.password = await hash(body.password, 10);
+    entityToUpdate.name = body.name || entityToUpdate.name;
+    entityToUpdate.password = body.password
+      ? await hash(body.password, 10)
+      : entityToUpdate.password;
     await this.repository.save(entityToUpdate);
   }
   //todo: se deletar a conta todos os eventos associados a ela deveriam ser deletados? mas aí gera uma treta pq permite um golpe de apagar o evento apos a venda de ingressos
