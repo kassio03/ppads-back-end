@@ -8,7 +8,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { successBody } from 'src/common/utils';
+import { successBody } from '../../common/utils';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtGuard } from '../auth/jwt.guard';
 import { UserEntity } from '../user/entities/user.entity';

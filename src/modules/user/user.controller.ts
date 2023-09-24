@@ -13,7 +13,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { successBody } from 'src/common/utils';
+import { successBody } from '../../common/utils';
 import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { JwtGuard } from '../auth/jwt.guard';
 import { CreateUserDto, ReturnUserDto, UpdateUserDto } from './dtos';
@@ -31,8 +31,12 @@ export class UserController {
     status: 201,
     description: 'Usuário cadastrado com sucesso.',
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Informações passadas pelo body são inválidas.',
+  })
   @ApiResponse({ status: 400, description: 'Email já registrado.' })
-  async post(@Body() body: CreateUserDto) {
+  async createUser(@Body() body: CreateUserDto) {
     const res = await this.userService.insert(body);
     return successBody(new ReturnUserDto(res), 201);
   }
@@ -51,7 +55,10 @@ export class UserController {
     status: 401,
     description: 'Não autorizado. (Verifica o token)',
   })
-  async put(@Body() body: UpdateUserDto, @CurrentUser() user: UserEntity) {
+  async updateCurrentUser(
+    @Body() body: UpdateUserDto,
+    @CurrentUser() user: UserEntity,
+  ) {
     await this.userService.update(user.id, body);
     return successBody();
   }
@@ -71,7 +78,7 @@ export class UserController {
     status: 401,
     description: 'Não autorizado. (Verifica o token)',
   })
-  async delete(@CurrentUser() user: UserEntity) {
+  async deleteCurrentUser(@CurrentUser() user: UserEntity) {
     await this.userService.delete(user.id);
     return successBody();
   }
@@ -91,7 +98,7 @@ export class UserController {
     status: 401,
     description: 'Não autorizado. (Verifica o token)',
   })
-  async get(@CurrentUser() user: UserEntity) {
+  async getCurrentUser(@CurrentUser() user: UserEntity) {
     const res = await this.userService.findOne({ id: user.id });
     return successBody(new ReturnUserDto(res));
   }

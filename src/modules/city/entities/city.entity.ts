@@ -1,5 +1,3 @@
-import { AddressEntity } from 'src/modules/address/entities/address.entity';
-import { StateEntity } from 'src/modules/state/entities/state.entity';
 import {
   Column,
   Entity,
@@ -8,6 +6,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { AddressEntity } from '../../../modules/address/entities/address.entity';
+import { StateEntity } from '../../../modules/state/entities/state.entity';
 
 @Entity('city')
 export class CityEntity {

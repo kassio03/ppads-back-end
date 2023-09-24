@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { successBody } from 'src/common/utils';
+import { successBody } from '../../common/utils';
 import { CityService } from './city.service';
 
 @Controller('city')

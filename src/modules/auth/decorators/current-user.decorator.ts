@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
-import { UserEntity } from 'src/modules/user/entities/user.entity';
+import { UserEntity } from '../../../modules/user/entities/user.entity';
 
 class AuthRequest extends Request {
   user: UserEntity;

@@ -1,6 +1,3 @@
-import { AddressEntity } from 'src/modules/address/entities/address.entity';
-import { TicketEntity } from 'src/modules/ticket/entities/ticket.entity';
-import { UserEntity } from 'src/modules/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -12,6 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { AddressEntity } from '../../../modules/address/entities/address.entity';
+import { TicketEntity } from '../../../modules/ticket/entities/ticket.entity';
+import { UserEntity } from '../../../modules/user/entities/user.entity';
 
 @Entity('event')
 export class EventEntity {

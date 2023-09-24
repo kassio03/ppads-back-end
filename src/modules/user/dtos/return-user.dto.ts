@@ -1,5 +1,5 @@
-import { EventEntity } from 'src/modules/event/entities/event.entity';
-import { TicketEntity } from 'src/modules/ticket/entities/ticket.entity';
+import { EventEntity } from '../../../modules/event/entities/event.entity';
+import { TicketEntity } from '../../../modules/ticket/entities/ticket.entity';
 import { UserEntity } from '../entities/user.entity';
 
 export class ReturnUserDto {

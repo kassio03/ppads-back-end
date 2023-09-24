@@ -8,7 +8,7 @@ import { EventModule } from './modules/event/event.module';
 import { StateModule } from './modules/state/state.module';
 import { TicketModule } from './modules/ticket/ticket.module';
 import { UserModule } from './modules/user/user.module';
-
+// todo: too many requests
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),

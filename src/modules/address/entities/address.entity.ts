@@ -1,5 +1,3 @@
-import { CityEntity } from 'src/modules/city/entities/city.entity';
-import { EventEntity } from 'src/modules/event/entities/event.entity';
 import {
   Column,
   CreateDateColumn,
@@ -10,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { CityEntity } from '../../../modules/city/entities/city.entity';
+import { EventEntity } from '../../../modules/event/entities/event.entity';
 
 @Entity('address')
 export class AddressEntity {

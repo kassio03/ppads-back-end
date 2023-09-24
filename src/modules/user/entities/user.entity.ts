@@ -1,5 +1,3 @@
-import { EventEntity } from 'src/modules/event/entities/event.entity';
-import { TicketEntity } from 'src/modules/ticket/entities/ticket.entity';
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +7,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { EventEntity } from '../../../modules/event/entities/event.entity';
+import { TicketEntity } from '../../../modules/ticket/entities/ticket.entity';
 
 @Entity('user')
 export class UserEntity {

@@ -4,8 +4,8 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { generateQRCode } from 'src/common/utils';
 import { Repository } from 'typeorm';
+import { generateQRCode } from '../../common/utils';
 import { EventService } from '../event/event.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
@@ -25,7 +25,6 @@ export class TicketService {
     if (!specificEvent) {
       throw new NotFoundException('Evento não encontrado.');
     }
-    console.log(specificEvent.tickets.length, specificEvent.totalTickets);
     if (specificEvent.tickets.length >= specificEvent.totalTickets) {
       throw new BadRequestException('Ingressos esgotados.');
     }
@@ -45,7 +44,7 @@ export class TicketService {
       where: { qrCode },
     });
     if (!specificTicketEntity) {
-      throw new NotFoundException('QRCode não encontrado ou já utilizado.');
+      throw new NotFoundException('QRCode não encontrado.');
     }
     if (specificTicketEntity.alreadyUsed)
       throw new BadRequestException(`
@@ -56,7 +55,7 @@ export class TicketService {
     );
     if (!specificEventEntity)
       throw new NotFoundException('Evento não encontrado');
-    if (!(specificEventEntity.authorId === userId)) {
+    if (specificEventEntity.authorId !== userId) {
       throw new BadRequestException(
         'Somente o organizador pode validar o QRCode.',
       );
