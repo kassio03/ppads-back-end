@@ -5,7 +5,9 @@ import { Repository } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from './dtos';
 import { UserEntity } from './entities/user.entity';
 import { userUtilFields } from './utils/user-util-fields';
-
+//todo: verificar se o email existe e para isso eu preciso enviar ativação
+// email não verificado cria a conta mas n pode pegar ingresso nem criar evento
+//todo: tem q enviar o code no email pra recuperar a senha
 @Injectable()
 export class UserService {
   constructor(
@@ -25,21 +27,22 @@ export class UserService {
     entityToInsert.name = body.name;
     entityToInsert.email = body.email;
     entityToInsert.password = passwordHashed;
-    const entityInserted = await this.repository.save(entityToInsert);
+    const insertedEntity = await this.repository.save(entityToInsert);
     return {
-      ...entityInserted,
-      password: undefined,
+      ...insertedEntity,
     };
   }
 
-  async update(id: string, body: UpdateUserDto): Promise<void> {
+  async update(id: string, body: UpdateUserDto): Promise<UserEntity> {
     const entityToUpdate = await this.repository.findOne({ where: { id } });
     entityToUpdate.name = body.name || entityToUpdate.name;
     entityToUpdate.password = body.password
       ? await hash(body.password, 10)
       : entityToUpdate.password;
-    await this.repository.save(entityToUpdate);
+    const updatedEntity = await this.repository.save(entityToUpdate);
+    return { ...updatedEntity };
   }
+
   //todo: se deletar a conta todos os eventos associados a ela deveriam ser deletados? mas aí gera uma treta pq permite um golpe de apagar o evento apos a venda de ingressos
   //solution: uma conta com eventos ativos não pode ser deletada.
   async delete(id: string): Promise<void> {
@@ -52,6 +55,6 @@ export class UserService {
       relations: { events: true, tickets: true },
       select: userUtilFields,
     });
-    return entityToReturn;
+    return { ...entityToReturn };
   }
 }

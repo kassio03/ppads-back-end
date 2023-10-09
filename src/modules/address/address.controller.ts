@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { JwtGuard } from '../auth/jwt.guard';
+import { Body, Controller, Param } from '@nestjs/common';
+import { successBody } from 'src/common/utils';
 import { AddressService } from './address.service';
 import { CreateAddressDto } from './dto/create-address.dto';
 
@@ -7,14 +7,16 @@ import { CreateAddressDto } from './dto/create-address.dto';
 export class AddressController {
   constructor(private readonly addressService: AddressService) {}
 
-  @Post()
-  @UseGuards(JwtGuard)
+  //@Post()
+  //@UseGuards(JwtGuard)
   async create(@Body() createAddressDto: CreateAddressDto) {
-    return this.addressService.create(createAddressDto);
+    const res = await this.addressService.create(createAddressDto);
+    return successBody(res);
   }
 
-  @Get(':id')
+  //@Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.addressService.findOne(+id);
+    const res = await this.addressService.findOne(id);
+    return successBody(res);
   }
 }

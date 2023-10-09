@@ -4,7 +4,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { sendBase64 } from 'src/common/utils/google-cloud-storage';
+import { MoreThan, Repository } from 'typeorm';
+import { AddressService } from '../address/address.service';
 import { UserEntity } from '../user/entities/user.entity';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
@@ -16,9 +18,12 @@ export class EventService {
   constructor(
     @InjectRepository(EventEntity)
     private readonly repository: Repository<EventEntity>,
+    private readonly addressService: AddressService,
   ) {}
+  //todo: verificar se já tem um evento cadastrado no mesmo horario do mesmo endereço
   async create(body: CreateEventDto, user: UserEntity): Promise<EventEntity> {
-    //todo: precisa ver se o addressId já existe
+    const insertedAddress = await this.addressService.create(body.address);
+
     const entityToInsert = this.repository.create();
 
     entityToInsert.title = body.title;
@@ -28,8 +33,8 @@ export class EventService {
     entityToInsert.eventStartsAt = new Date(body.eventStartsAt);
     entityToInsert.eventFinishAt = new Date(body.eventFinishAt);
     entityToInsert.price = body.price;
-    entityToInsert.poster = body.poster;
-    entityToInsert.addressId = body.addressId;
+    entityToInsert.poster = sendBase64(body.poster);
+    entityToInsert.addressId = insertedAddress.id;
     entityToInsert.authorId = user.id;
 
     const entityInserted = await this.repository.save(entityToInsert);
@@ -47,12 +52,13 @@ export class EventService {
         },
       },
       select: eventUtilFields,
+      where: { eventFinishAt: MoreThan(new Date()) },
     });
 
     return allEntities;
   }
 
-  async findOne(id: string) {
+  async findOne(id: string): Promise<EventEntity> {
     const specificEntity = await this.repository.findOne({
       where: { id },
       relations: {
@@ -61,6 +67,7 @@ export class EventService {
             state: true,
           },
         },
+        tickets: true,
       },
       select: eventUtilFields,
     });
@@ -70,7 +77,11 @@ export class EventService {
 
     return specificEntity;
   }
-  async update(eventId: string, body: UpdateEventDto, userId: string) {
+  async update(
+    eventId: string,
+    body: UpdateEventDto,
+    userId: string,
+  ): Promise<EventEntity> {
     const entityToUpdate = await this.repository.findOne({
       where: { id: eventId },
     });
@@ -83,13 +94,12 @@ export class EventService {
     }
     entityToUpdate.description = body.description;
     entityToUpdate.title = body.title;
-    // todo: preciso chamar na geração do ticket?
 
     const updatedEntity = await this.repository.save(entityToUpdate);
     return updatedEntity;
   }
 
-  async updateRemainingTickets(id: string) {
+  async updateRemainingTickets(id: string): Promise<void> {
     const entityToUpdate = await this.repository.findOne({
       where: { id },
     });
@@ -97,7 +107,9 @@ export class EventService {
     await this.repository.save(entityToUpdate);
   }
 
-  async remove(id: string) {
-    return `This action removes a #${id} event`;
+  async remove(id: string, userId: string): Promise<string> {
+    userId;
+    await this.repository.delete(id);
+    return `This action removes a #${id + userId} event`;
   }
 }

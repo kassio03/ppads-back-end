@@ -30,9 +30,14 @@ export class AddressService {
     return `This action returns all address`;
   }
 
-  //todo: implementar esse metodo pra ver se o address existe antes de cadastrar o evento
-  findOne(id: number) {
-    return `This action returns a #${id} address`;
+  async findOne(id: string) {
+    const specificAddressEntity = await this.repository.findOne({
+      where: { id },
+    });
+    if (!specificAddressEntity) {
+      throw new NotFoundException('Endereço não encontrado.');
+    }
+    return specificAddressEntity;
   }
 
   update(id: number, updateAddressDto: UpdateAddressDto) {

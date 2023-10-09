@@ -18,6 +18,10 @@ export class AuthController {
     description: 'Usuário logado com sucesso.',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Informações passadas pelo body são inválidas.',
+  })
+  @ApiResponse({
     status: 401,
     description: 'Email e/ou senha inválidos.',
   })

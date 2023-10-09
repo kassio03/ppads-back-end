@@ -1,6 +1,8 @@
 # compiled output
 /dist
 /node_modules
+/test.js
+/mystic-benefit-400016-72499125a9c2.json
 
 # Logs
 logs

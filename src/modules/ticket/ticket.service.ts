@@ -16,11 +16,11 @@ export class TicketService {
   constructor(
     @InjectRepository(TicketEntity)
     private readonly repository: Repository<TicketEntity>,
-    private readonly eventRepository: EventService,
+    private readonly eventService: EventService,
   ) {}
 
   async create(body: CreateTicketDto, userId: string) {
-    const specificEvent = await this.eventRepository.findOne(body.eventId);
+    const specificEvent = await this.eventService.findOne(body.eventId);
 
     if (!specificEvent) {
       throw new NotFoundException('Evento não encontrado.');
@@ -35,7 +35,7 @@ export class TicketService {
     entityToInsert.userId = userId;
     entityToInsert.qrCode = qrCode;
     const entityInserted = await this.repository.save(entityToInsert);
-    await this.eventRepository.updateRemainingTickets(body.eventId);
+    await this.eventService.updateRemainingTickets(body.eventId);
     return entityInserted;
   }
 
@@ -44,13 +44,13 @@ export class TicketService {
       where: { qrCode },
     });
     if (!specificTicketEntity) {
-      throw new NotFoundException('QRCode não encontrado.');
+      throw new NotFoundException('QRCode inválido.');
     }
     if (specificTicketEntity.alreadyUsed)
       throw new BadRequestException(`
         QRCode foi utilizado as: ${new Date(specificTicketEntity.usedAt)}.
       `);
-    const specificEventEntity = await this.eventRepository.findOne(
+    const specificEventEntity = await this.eventService.findOne(
       specificTicketEntity.eventId,
     );
     if (!specificEventEntity)

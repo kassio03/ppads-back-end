@@ -19,7 +19,7 @@ export class CityEntity {
     name: 'name',
   })
   name: string;
-  //todo: add @IsNotEmpty() to the fields
+
   @Column({
     type: 'varchar',
     name: 'stateId',

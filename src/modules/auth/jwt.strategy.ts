@@ -18,7 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const res = await this.userService.findOne({
       email: data.email,
     });
-    if (!res) throw new UnauthorizedException('Email e/ou senha inválidos(s)');
+    if (!res) throw new UnauthorizedException();
     return res;
   }
 }

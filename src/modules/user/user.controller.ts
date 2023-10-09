@@ -33,9 +33,9 @@ export class UserController {
   })
   @ApiResponse({
     status: 400,
-    description: 'Informações passadas pelo body são inválidas.',
+    description:
+      'Informações passadas pelo body são inválidas ou email já registrado.',
   })
-  @ApiResponse({ status: 400, description: 'Email já registrado.' })
   async createUser(@Body() body: CreateUserDto) {
     const res = await this.userService.insert(body);
     return successBody(new ReturnUserDto(res), 201);
@@ -52,6 +52,10 @@ export class UserController {
     description: 'Usuário atualmente logado atualizado com sucesso.',
   })
   @ApiResponse({
+    status: 400,
+    description: 'Informações passadas pelo body são inválidas',
+  })
+  @ApiResponse({
     status: 401,
     description: 'Não autorizado. (Verifica o token)',
   })
@@ -59,8 +63,8 @@ export class UserController {
     @Body() body: UpdateUserDto,
     @CurrentUser() user: UserEntity,
   ) {
-    await this.userService.update(user.id, body);
-    return successBody();
+    const res = await this.userService.update(user.id, body);
+    return successBody(new ReturnUserDto(res));
   }
 
   @Delete()

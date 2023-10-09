@@ -10,11 +10,11 @@ export class CityService {
     private readonly repository: Repository<CityEntity>,
   ) {}
 
-  // todo: desfazer pq ficou redundante
-  async findAllCitiesByStateId(data): Promise<CityEntity[]> {
+  async findAllCitiesByStateId(stateId: string): Promise<CityEntity[]> {
     const allEntities = await this.repository.find({
-      where: data,
+      where: { stateId },
       relations: { state: true },
+      select: { id: true, name: true },
     });
 
     if (!allEntities)

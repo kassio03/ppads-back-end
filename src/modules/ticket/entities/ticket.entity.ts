@@ -36,7 +36,6 @@ export class TicketEntity {
   @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: UserEntity;
 
-  // todo: qrCode tem q ser unique
   @Column({
     type: 'varchar',
     name: 'qrCode',

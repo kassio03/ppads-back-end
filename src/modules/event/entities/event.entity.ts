@@ -48,7 +48,6 @@ export class EventEntity {
   })
   eventStartsAt: Date;
 
-  // todo: remover unique
   @CreateDateColumn({
     type: 'timestamp',
     name: 'finishAt',
