@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsBase64,
   IsInt,
   IsNotEmpty,
   IsNumber,
@@ -61,7 +60,7 @@ export class CreateEventDto {
     example: 'data:image/jpeg;base64,/9j/4AAQSk...',
   })
   @IsNotEmpty()
-  @IsBase64()
+  @IsString()
   poster: string;
 
   @ApiProperty({

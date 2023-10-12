@@ -9,6 +9,10 @@ export const eventUtilFields = {
   poster: true,
   authorId: true,
   totalTickets: true,
+  author: {
+    name: true,
+    email: true,
+  },
   address: {
     complement: true,
     houseNumber: true,

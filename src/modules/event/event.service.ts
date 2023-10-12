@@ -68,6 +68,7 @@ export class EventService {
           },
         },
         tickets: true,
+        author: true,
       },
       select: eventUtilFields,
     });

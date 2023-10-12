@@ -28,9 +28,7 @@ export class UserService {
     entityToInsert.email = body.email;
     entityToInsert.password = passwordHashed;
     const insertedEntity = await this.repository.save(entityToInsert);
-    return {
-      ...insertedEntity,
-    };
+    return insertedEntity;
   }
 
   async update(id: string, body: UpdateUserDto): Promise<UserEntity> {
@@ -40,7 +38,7 @@ export class UserService {
       ? await hash(body.password, 10)
       : entityToUpdate.password;
     const updatedEntity = await this.repository.save(entityToUpdate);
-    return { ...updatedEntity };
+    return updatedEntity;
   }
 
   //todo: se deletar a conta todos os eventos associados a ela deveriam ser deletados? mas aí gera uma treta pq permite um golpe de apagar o evento apos a venda de ingressos
@@ -52,9 +50,9 @@ export class UserService {
   async findOne(data: Partial<UserEntity>): Promise<UserEntity> {
     const entityToReturn = await this.repository.findOne({
       where: data,
-      relations: { events: true, tickets: true },
+      relations: { events: true, tickets: { event: true } },
       select: userUtilFields,
     });
-    return { ...entityToReturn };
+    return entityToReturn;
   }
 }

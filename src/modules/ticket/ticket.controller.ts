@@ -36,7 +36,7 @@ export class TicketController {
   @UseGuards(JwtGuard)
   async create(@Body() body: CreateTicketDto, @CurrentUser() user: UserEntity) {
     const res = await this.ticketService.create(body, user.id);
-    return successBody(new ReturnTicketDto(res));
+    return successBody(new ReturnTicketDto(res), 201);
   }
 
   @ApiOperation({ summary: 'Validação do QRCode.' })
