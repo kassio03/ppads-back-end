@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 import { generateQRCode } from '../../common/utils';
 import { EventService } from '../event/event.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
@@ -29,7 +30,7 @@ export class TicketService {
       throw new BadRequestException('Ingressos esgotados.');
     }
 
-    const qrCode = await generateQRCode(body.eventId + userId + '123');
+    const qrCode = await generateQRCode(body.eventId + userId + uuidv4());
     const entityToInsert = this.repository.create();
     entityToInsert.eventId = body.eventId;
     entityToInsert.userId = userId;
