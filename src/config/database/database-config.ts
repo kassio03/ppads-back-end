@@ -10,6 +10,8 @@ export const databaseConfig: DataSourceOptions = {
   host: process.env.DATABASE_HOST,
   port: Number(process.env.DATABASE_PORT),
   database: process.env.DATABASE_NAME,
+  url: process.env.DATABASE_URL,
+  ssl: true,
   entities: ['dist/modules/**/**/*.entity.{ts,js}'],
   migrations: ['dist/config/database/migrations/*.{ts,js}'],
 };
