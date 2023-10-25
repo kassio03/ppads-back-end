@@ -19,54 +19,71 @@
     <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
   <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Instructions for running the back end of our Happens Here project locally.
+
+If you want our front end as well, you can find it here: [Front End Repository](https://github.com/BiancaDuarteRaposo/ppads---projeto)
 
 ## Installation
 
-```bash
-$ npm install
+### Cloning the project
+
+```sh
+git clone https://github.com/kassio03/ppads-back-end.git
+```
+
+Alternatively you can download the latest zipped version of our project here: [Latest Version](https://github.com/kassio03/ppads-back-end/archive/refs/tags/v2.0.zip)
+
+### Installing all dependencies
+
+```sh
+yarn
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+yarn start
 
 # watch mode
-$ npm run start:dev
+yarn start:dev
 
 # production mode
-$ npm run start:prod
+yarn start:prod
 ```
 
-## Test
+## Enviroment Variables
 
-```bash
-# unit tests
-$ npm run test
+### Connection with database
 
-# e2e tests
-$ npm run test:e2e
+For security purposes we can't provide our database, therefore you will need to create your own database.
 
-# test coverage
-$ npm run test:cov
-```
+You must provide the environment variables about your database in the .env file.
+
+In this project we use and recommend PostgreSQL, the following article can be helpful to create a database using a Docker container.
+
+[How to Use the Postgres Docker Official Image](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)
+
+### Connection with Google Cloud Storage
+
+In this project we use Google Cloud Storage to store the posters of the registered events in the database. For security reasons, we can't provide the credentials used. You will need to create your own bucket on GCS and provide the environment variables in the .env file.
+
+> Tip: The Front End sends the poster in Base64 format. Alternatively, you can store this converted image directly in the database, eliminating the need for GCS. However, consider that this alternative requires significantly more storage in your database.
 
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
+<!--
 ## Stay in touch
 
 - Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
 - Website - [https://nestjs.com](https://nestjs.com/)
 - Twitter - [@nestframework](https://twitter.com/nestframework)
+ -->
 
 ## License
 

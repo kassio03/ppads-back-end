@@ -11,7 +11,7 @@ export const sendBase64 = (image: string): string => {
   });
 
   const fileName = uuidv4();
-  const baseBucketUrl = 'https://storage.googleapis.com/happens-here/';
+  const baseBucketUrl = process.env.BASE_BUCKET_URL;
 
   const bucket = gc.bucket('happens-here');
   const file = bucket.file(fileName);
