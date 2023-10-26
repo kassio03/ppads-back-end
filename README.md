@@ -24,6 +24,10 @@
 
 Instructions for running the back end of our Happens Here project locally.
 
+This Repository was deployed on the Render platform, you can access it through this link: [Happens Here API](https://happens-here.onrender.com/)
+
+> Notice: Within the platform, we use the free plan. This plan is highly recommended for educational purposes. However, it has a limitation: the API will be "turned off" if it is not currently in use. Therefore, the first request to the API may take up two minutes to receive a response because the API needs to be "started".
+
 If you want our front end as well, you can find it here: [Front End Repository](https://github.com/BiancaDuarteRaposo/ppads---projeto)
 
 ## Installation
