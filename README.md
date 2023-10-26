@@ -73,6 +73,15 @@ In this project we use Google Cloud Storage to store the posters of the register
 
 > Tip: The Front End sends the poster in Base64 format. Alternatively, you can store this converted image directly in the database, eliminating the need for GCS. However, consider that this alternative requires significantly more storage in your database.
 
+## System Requirements
+
+| Recommended |                                  |
+| ----------- | -------------------------------- |
+| OS          | Windows 10/11 (32-bit or 64-bit) |
+| Processor   | 1.6 Ghz or faster processor      |
+| Memory      | 1 GB of RAM                      |
+| Storage     | 1 GB available space             |
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
